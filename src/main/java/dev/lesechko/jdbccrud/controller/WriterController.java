@@ -1,10 +1,10 @@
-package dev.lesechko.controller;
+package dev.lesechko.jdbccrud.controller;
 
-import dev.lesechko.simplecrud.model.Post;
-import dev.lesechko.simplecrud.model.Status;
-import dev.lesechko.simplecrud.model.Writer;
-import dev.lesechko.simplecrud.repository.WriterRepository;
-import dev.lesechko.simplecrud.repository.gson.GsonWriterRepositoryImpl;
+import dev.lesechko.jdbccrud.model.Post;
+import dev.lesechko.jdbccrud.model.Status;
+import dev.lesechko.jdbccrud.model.Writer;
+import dev.lesechko.jdbccrud.repository.WriterRepository;
+//import dev.lesechko.jdbccrud.repository.gson.GsonWriterRepositoryImpl;
 
 import java.util.List;
 

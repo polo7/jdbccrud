@@ -1,4 +1,4 @@
-package dev.lesechko.repository;
+package dev.lesechko.jdbccrud.repository;
 
 import java.util.List;
 

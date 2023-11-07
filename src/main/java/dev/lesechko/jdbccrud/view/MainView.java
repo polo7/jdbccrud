@@ -1,4 +1,4 @@
-package dev.lesechko.view;
+package dev.lesechko.jdbccrud.view;
 
 import java.util.Scanner;
 

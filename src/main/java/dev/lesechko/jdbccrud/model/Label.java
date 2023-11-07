@@ -1,4 +1,4 @@
-package dev.lesechko.model;
+package dev.lesechko.jdbccrud.model;
 
 public class Label {
     private Long id;

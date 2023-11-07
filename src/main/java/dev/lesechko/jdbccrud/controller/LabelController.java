@@ -1,11 +1,11 @@
-package dev.lesechko.controller;
+package dev.lesechko.jdbccrud.controller;
 
 import java.util.List;
 
-import dev.lesechko.simplecrud.model.Label;
-import dev.lesechko.simplecrud.model.Status;
-import dev.lesechko.simplecrud.repository.gson.GsonLabelRepositoryImpl;
-import dev.lesechko.simplecrud.repository.LabelRepository;
+import dev.lesechko.jdbccrud.model.Label;
+import dev.lesechko.jdbccrud.model.Status;
+//import dev.lesechko.jdbccrud.repository.gson.GsonLabelRepositoryImpl;
+import dev.lesechko.jdbccrud.repository.LabelRepository;
 
 public class LabelController {
     private final LabelRepository labelRepository = new GsonLabelRepositoryImpl();

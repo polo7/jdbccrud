@@ -1,12 +1,12 @@
-package dev.lesechko.controller;
+package dev.lesechko.jdbccrud.controller;
 
 import java.util.List;
 
-import dev.lesechko.simplecrud.model.Label;
-import dev.lesechko.simplecrud.model.Post;
-import dev.lesechko.simplecrud.model.Status;
-import dev.lesechko.simplecrud.repository.PostRepository;
-import dev.lesechko.simplecrud.repository.gson.GsonPostRepositoryImpl;
+import dev.lesechko.jdbccrud.model.Label;
+import dev.lesechko.jdbccrud.model.Post;
+import dev.lesechko.jdbccrud.model.Status;
+import dev.lesechko.jdbccrud.repository.PostRepository;
+//import dev.lesechko.jdbccrud.repository.gson.GsonPostRepositoryImpl;
 
 
 public class PostController {

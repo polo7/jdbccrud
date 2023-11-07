@@ -1,14 +1,14 @@
-package dev.lesechko.view;
+package dev.lesechko.jdbccrud.view;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import dev.lesechko.simplecrud.controller.WriterController;
-import dev.lesechko.simplecrud.controller.PostController;
-import dev.lesechko.simplecrud.model.Post;
-import dev.lesechko.simplecrud.model.Status;
-import dev.lesechko.simplecrud.model.Writer;
+import dev.lesechko.jdbccrud.controller.WriterController;
+import dev.lesechko.jdbccrud.controller.PostController;
+import dev.lesechko.jdbccrud.model.Post;
+import dev.lesechko.jdbccrud.model.Status;
+import dev.lesechko.jdbccrud.model.Writer;
 
 
 public class WriterView {

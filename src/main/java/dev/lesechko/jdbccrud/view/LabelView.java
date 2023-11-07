@@ -1,11 +1,11 @@
-package dev.lesechko.view;
+package dev.lesechko.jdbccrud.view;
 
 import java.util.Scanner;
 import java.util.List;
 
-import dev.lesechko.simplecrud.controller.LabelController;
-import dev.lesechko.simplecrud.model.Label;
-import dev.lesechko.simplecrud.model.Status;
+import dev.lesechko.jdbccrud.controller.LabelController;
+import dev.lesechko.jdbccrud.model.Label;
+import dev.lesechko.jdbccrud.model.Status;
 
 
 public class LabelView {

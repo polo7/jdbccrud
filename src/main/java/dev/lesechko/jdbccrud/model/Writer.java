@@ -1,4 +1,4 @@
-package dev.lesechko.model;
+package dev.lesechko.jdbccrud.model;
 
 import java.util.List;
 
