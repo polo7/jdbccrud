@@ -1,7 +1,7 @@
 package dev.lesechko.jdbccrud.model;
 
 public class Label {
-    private Long id;
+    private Integer id;
     private String name;
     private Status status;
 
@@ -9,7 +9,7 @@ public class Label {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

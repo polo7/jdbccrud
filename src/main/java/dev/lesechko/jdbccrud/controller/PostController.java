@@ -10,7 +10,7 @@ import dev.lesechko.jdbccrud.repository.PostRepository;
 
 
 public class PostController {
-    private final PostRepository postRepository = new GsonPostRepositoryImpl();
+//    private final PostRepository postRepository = new GsonPostRepositoryImpl();
 
     public Post add(String title, String content, List<Label> labels) {
         Post newPost = new Post();
@@ -18,15 +18,18 @@ public class PostController {
         newPost.setContent(content);
         newPost.setLabels(labels);
         newPost.setStatus(Status.ACTIVE);
-        return postRepository.save(newPost);
+//        return postRepository.save(newPost);
+        return null;
     }
 
     public List<Post> getAll() {
-        return postRepository.getAll();
+//        return postRepository.getAll();
+        return null;
     }
 
     public Post getById(Long id) {
-        return postRepository.getById(id);
+//        return postRepository.getById(id);
+        return null;
     }
 
     public boolean update(Post post, String newTitle, String newContent, List<Label> newPostLabels, boolean changeStatus) {
@@ -42,11 +45,13 @@ public class PostController {
             Status newStatus = (post.getStatus() == Status.DELETED) ? Status.ACTIVE : Status.DELETED;
             post.setStatus(newStatus);
         }
-        return postRepository.update(post) != null;
+//        return postRepository.update(post) != null;
+        return false;
     }
 
     public boolean deleteById(Long id) {
-        return postRepository.deleteById(id);
+//        return postRepository.deleteById(id);
+        return false;
     }
 
 }

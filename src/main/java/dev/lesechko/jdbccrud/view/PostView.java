@@ -73,9 +73,9 @@ public class PostView {
         System.out.println("Add labels to the post by ID.\nEnter -1 to finish");
         new LabelView().showAllLabels();
         List<Label> postLabels = new ArrayList<>();
-        for (Long chosenLabelId;;) {
+        for (Integer chosenLabelId;;) {
             System.out.print("Label ID to add: ");
-            chosenLabelId = sc.nextLong();
+            chosenLabelId = sc.nextInt();
             if (chosenLabelId == -1) break;
             Label labelToAdd = labelController.getById(chosenLabelId);
             if (labelToAdd != null)
@@ -158,9 +158,9 @@ public class PostView {
             System.out.println();
             System.out.println("Enter new label IDs below (enter -1 to finish)");
             List<Label> newPostLabels = new ArrayList<>();
-            for (Long chosenLabelId;;) {
+            for (Integer chosenLabelId;;) {
                 System.out.print("Label ID to add: ");
-                chosenLabelId = sc.nextLong();
+                chosenLabelId = sc.nextInt();
                 if (chosenLabelId == -1) break;
                 Label labelToAdd = labelController.getById(chosenLabelId);
                 if (labelToAdd != null)
