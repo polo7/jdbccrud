@@ -22,7 +22,9 @@ public class LabelService {
         return labelRepository.getById(id);
     }
 
-    //TODO: IMPLEMENT UPDATE
+    public boolean update(Label label) {
+        return labelRepository.update(label);
+    }
 
     public boolean deleteById(Integer id) {
         return labelRepository.deleteById(id);

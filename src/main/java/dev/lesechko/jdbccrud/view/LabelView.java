@@ -91,43 +91,45 @@ public class LabelView {
 
     private void showEditLabel() {
         System.out.println("+--- Edit Label ---+");
-//        System.out.print("Edit label with ID: ");
-//
-//        Long id = sc.nextLong();
-//        sc.nextLine();
-//
-//        Label label = labelController.getById(id);
-//        if (label != null) {
-//            // LABEL NAME
-//            System.out.println("Current name: " + label.getName());
-//            System.out.print("New name (leave blank to skip): ");
-//            String newName = sc.nextLine();
-//
-//            // LABEL STATUS
-//            System.out.println("Current status: " + label.getStatus());
-//            String action = (label.getStatus() == Status.ACTIVE) ? "Delete" : "Restore";
-//            System.out.print(action + " element? (type [yes/no]): ");
-//            String statusReply = sc.nextLine();
-//            boolean changeStatus = "yes".equalsIgnoreCase(statusReply);
-//            if (labelController.update(label, newName, changeStatus))
-//                System.out.println("Updating: OK");
-//            else
-//                System.out.println("Can't update or write to DB");
-//
-//        }
-//        else
-//            System.out.println("ID " + id + " is not found");
+        System.out.print("Edit label with ID: ");
+
+        Integer id = sc.nextInt();
+        sc.nextLine();
+
+        Label label = labelController.getById(id);
+        if (label != null) {
+            // LABEL NAME
+            System.out.println("Current name: " + label.getName());
+            System.out.print("New name (leave blank to skip): ");
+            String newName = sc.nextLine();
+
+            // LABEL STATUS
+            System.out.println("Current status: " + label.getStatus());
+            String action = (label.getStatus() == Status.ACTIVE) ? "Delete" : "Restore";
+            System.out.print(action + " element? (type [yes/no]): ");
+            String statusReply = sc.nextLine();
+            boolean changeStatus = "yes".equalsIgnoreCase(statusReply);
+            if (labelController.update(label, newName, changeStatus))
+                System.out.println("Updating: OK");
+            else
+                System.out.println("Can't update or write to DB");
+
+        }
+        else
+            System.out.println("ID " + id + " is not found");
 
         pauseDialog();
     }
 
     private void showDeleteLabel() {
         System.out.println("+--- Delete Label ---+");
-        System.out.print("\"ID\" to delete: ");
+        System.out.print("ID to delete: ");
         Integer id = sc.nextInt();
         sc.nextLine();
-        if (labelController.deleteById(id)) System.out.println(id + " is deleted");
-        else System.out.println("ID " + id + " is not found");
+        if (labelController.deleteById(id))
+            System.out.println(id + " is deleted");
+        else
+            System.out.println("ID " + id + " is not found");
         pauseDialog();
     }
 }

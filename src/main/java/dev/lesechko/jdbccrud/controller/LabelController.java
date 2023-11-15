@@ -24,16 +24,16 @@ public class LabelController {
         return labelService.getById(id);
     }
 
-//    public boolean update(Label label, String newName, boolean changeStatus) {
-//        boolean changeName = (newName != null && !newName.isEmpty());
-//        if (!changeName && !changeStatus) return false;
-//        if (changeName) label.setName(newName);
-//        if (changeStatus) {
-//            Status newStatus = (label.getStatus() == Status.DELETED) ? Status.ACTIVE : Status.DELETED;
-//            label.setStatus(newStatus);
-//        }
-//        return labelService.update(label);
-//    }
+    public boolean update(Label label, String newName, boolean changeStatus) {
+        boolean changeName = (newName != null && !newName.isEmpty());
+        if (!changeName && !changeStatus) return false;
+        if (changeName) label.setName(newName);
+        if (changeStatus) {
+            Status newStatus = (label.getStatus() == Status.DELETED) ? Status.ACTIVE : Status.DELETED;
+            label.setStatus(newStatus);
+        }
+        return labelService.update(label);
+    }
 
     public boolean deleteById(Integer id) {
         return labelService.deleteById(id);
