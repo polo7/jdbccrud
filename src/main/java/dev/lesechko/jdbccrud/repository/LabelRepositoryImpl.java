@@ -1,5 +1,6 @@
 package dev.lesechko.jdbccrud.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -11,19 +12,15 @@ import dev.lesechko.jdbccrud.model.Status;
 
 
 public class LabelRepositoryImpl implements LabelRepository {
-    private static final String DB_COL_ID = "id";
-    private static final String DB_COL_NAME = "name";
-    private static final String DB_COL_STATUS = "status";
-
     @Override
     public boolean save(Label label) {
-        try (Statement stmnt = DbConnection.getConnection().createStatement()) {
-            String sql = """
-                    INSERT INTO labels (%s, %s) 
-                    VALUES ('%s', '%s')
-                    """.formatted(DB_COL_NAME, DB_COL_STATUS, label.getName(), label.getStatus().name());
-            return stmnt.executeUpdate(sql) != 0;
+        String sql = "INSERT INTO labels (name, status) VALUES (?, ?)";
+        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+            stmnt.setString(1, label.getName());
+            stmnt.setString(2, label.getStatus().name());
+            return stmnt.executeUpdate() != 0;
         } catch (SQLException | NullPointerException e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -36,9 +33,9 @@ public class LabelRepositoryImpl implements LabelRepository {
             ResultSet rs = stmnt.executeQuery(sql);
             while (rs.next()) {
                 Label label = new Label();
-                label.setId(rs.getInt(DB_COL_ID));
-                label.setName(rs.getString(DB_COL_NAME));
-                label.setStatus(Status.valueOf(rs.getString(DB_COL_STATUS)));
+                label.setId(rs.getInt("id"));
+                label.setName(rs.getString("name"));
+                label.setStatus(Status.valueOf(rs.getString("status")));
                 labels.add(label);
             }
             return labels;
@@ -51,14 +48,15 @@ public class LabelRepositoryImpl implements LabelRepository {
     @Override
     public Label getById(Integer id) {
         Label label = null;
-        String sql = "SELECT * FROM labels WHERE id=" + id;
-        try (Statement stmnt = DbConnection.getConnection().createStatement()) {
-            ResultSet rs = stmnt.executeQuery(sql);
+        String sql = "SELECT * FROM labels WHERE id = ?";
+        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+            stmnt.setInt(1, id);
+            ResultSet rs = stmnt.executeQuery();
             if (rs.next()) {
                 label = new Label();
-                label.setId(rs.getInt(DB_COL_ID));
-                label.setName(rs.getString(DB_COL_NAME));
-                label.setStatus(Status.valueOf(rs.getString(DB_COL_STATUS)));
+                label.setId(rs.getInt("id"));
+                label.setName(rs.getString("name"));
+                label.setStatus(Status.valueOf(rs.getString("status")));
             }
             return label;
         } catch (SQLException e) {
@@ -69,26 +67,27 @@ public class LabelRepositoryImpl implements LabelRepository {
 
     @Override
     public boolean update(Label label) {
-        String sql = """
-                UPDATE labels
-                SET %s = '%s', %s = '%s'
-                WHERE %s = %s
-                """.formatted(
-                        DB_COL_NAME, label.getName(), DB_COL_STATUS, label.getStatus(),
-                        DB_COL_ID, label.getId());
-        try (Statement stmnt = DbConnection.getConnection().createStatement()) {
-            return stmnt.executeUpdate(sql) != 0;
+        String sql = "UPDATE labels SET name = ?, status = ? WHERE id = ?";
+        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+            stmnt.setString(1, label.getName());
+            stmnt.setString(2, label.getStatus().name());
+            stmnt.setInt(3, label.getId());
+            return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }
 
     @Override
     public boolean deleteById(Integer id) {
-        String sql = "DELETE FROM labels WHERE id=" + id; // or SQL UPDATE + update STATUS -> DELETED ?
-        try (Statement stmnt = DbConnection.getConnection().createStatement()) {
-            return stmnt.executeUpdate(sql) != 0;
+//        String sql = "DELETE FROM labels WHERE id = ?";
+        String sql = "UPDATE labels SET status = 'DELETED' WHERE id = ?";
+        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+            stmnt.setInt(1, id);
+            return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {
+            e.printStackTrace();
             return false;
         }
     }

@@ -5,7 +5,7 @@ public class Label {
     private String name;
     private Status status;
 
-    public long getId() {
+    public Integer getId() {
         return id;
     }
 

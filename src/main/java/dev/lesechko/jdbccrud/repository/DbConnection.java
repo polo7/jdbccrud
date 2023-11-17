@@ -2,6 +2,7 @@ package dev.lesechko.jdbccrud.repository;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class DbConnection {
@@ -32,5 +33,9 @@ public class DbConnection {
                 e.printStackTrace();
             }
         return connection;
+    }
+
+    public static PreparedStatement getPreparedStatement(String sql) throws SQLException {
+        return getConnection().prepareStatement(sql);
     }
 }
