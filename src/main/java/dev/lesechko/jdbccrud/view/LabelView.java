@@ -76,7 +76,7 @@ public class LabelView {
         System.out.println("+--- Detailed LABEL info by ID ---+");
         System.out.print("Show label with ID: ");
 
-        Integer id = sc.nextInt();
+        Long id = sc.nextLong();
         sc.nextLine();
         System.out.printf("%-19s %-30s %-7s\n", "ID", "NAME", "STATUS");
 
@@ -93,7 +93,7 @@ public class LabelView {
         System.out.println("+--- Edit Label ---+");
         System.out.print("Edit label with ID: ");
 
-        Integer id = sc.nextInt();
+        Long id = sc.nextLong();
         sc.nextLine();
 
         Label label = labelController.getById(id);
@@ -124,7 +124,7 @@ public class LabelView {
     private void showDeleteLabel() {
         System.out.println("+--- Delete Label ---+");
         System.out.print("ID to delete: ");
-        Integer id = sc.nextInt();
+        Long id = sc.nextLong();
         sc.nextLine();
         if (labelController.deleteById(id))
             System.out.println(id + " is deleted");

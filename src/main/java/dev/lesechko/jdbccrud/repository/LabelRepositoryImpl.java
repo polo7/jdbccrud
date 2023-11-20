@@ -33,7 +33,7 @@ public class LabelRepositoryImpl implements LabelRepository {
             ResultSet rs = stmnt.executeQuery(sql);
             while (rs.next()) {
                 Label label = new Label();
-                label.setId(rs.getInt("id"));
+                label.setId(rs.getLong("id"));
                 label.setName(rs.getString("name"));
                 label.setStatus(Status.valueOf(rs.getString("status")));
                 labels.add(label);
@@ -46,15 +46,15 @@ public class LabelRepositoryImpl implements LabelRepository {
     }
 
     @Override
-    public Label getById(Integer id) {
+    public Label getById(Long id) {
         Label label = null;
         String sql = "SELECT * FROM labels WHERE id = ?";
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
-            stmnt.setInt(1, id);
+            stmnt.setLong(1, id);
             ResultSet rs = stmnt.executeQuery();
             if (rs.next()) {
                 label = new Label();
-                label.setId(rs.getInt("id"));
+                label.setId(rs.getLong("id"));
                 label.setName(rs.getString("name"));
                 label.setStatus(Status.valueOf(rs.getString("status")));
             }
@@ -71,7 +71,7 @@ public class LabelRepositoryImpl implements LabelRepository {
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
             stmnt.setString(1, label.getName());
             stmnt.setString(2, label.getStatus().name());
-            stmnt.setInt(3, label.getId());
+            stmnt.setLong(3, label.getId());
             return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,11 +80,11 @@ public class LabelRepositoryImpl implements LabelRepository {
     }
 
     @Override
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(Long id) {
 //        String sql = "DELETE FROM labels WHERE id = ?";
         String sql = "UPDATE labels SET status = 'DELETED' WHERE id = ?";
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
-            stmnt.setInt(1, id);
+            stmnt.setLong(1, id);
             return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();

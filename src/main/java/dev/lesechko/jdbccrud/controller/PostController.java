@@ -5,21 +5,20 @@ import java.util.List;
 import dev.lesechko.jdbccrud.model.Label;
 import dev.lesechko.jdbccrud.model.Post;
 import dev.lesechko.jdbccrud.model.Status;
-import dev.lesechko.jdbccrud.repository.PostRepository;
-//import dev.lesechko.jdbccrud.repository.gson.GsonPostRepositoryImpl;
+import dev.lesechko.jdbccrud.service.PostService;
 
 
 public class PostController {
-//    private final PostRepository postRepository = new GsonPostRepositoryImpl();
+    private final PostService postService = new PostService();
 
-    public Post add(String title, String content, List<Label> labels) {
+    public boolean add(String title, String content, List<Label> labels) {
         Post newPost = new Post();
         newPost.setTitle(title);
         newPost.setContent(content);
         newPost.setLabels(labels);
         newPost.setStatus(Status.ACTIVE);
 //        return postRepository.save(newPost);
-        return null;
+        return postService.save(newPost);
     }
 
     public List<Post> getAll() {

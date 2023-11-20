@@ -18,7 +18,7 @@ public class LabelService {
         return labelRepository.getAll();
     }
 
-    public Label getById(Integer id) {
+    public Label getById(Long id) {
         return labelRepository.getById(id);
     }
 
@@ -26,7 +26,7 @@ public class LabelService {
         return labelRepository.update(label);
     }
 
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(Long id) {
         return labelRepository.deleteById(id);
     }
 }

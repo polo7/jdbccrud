@@ -20,7 +20,7 @@ public class LabelController {
         return labelService.getAll();
     }
 
-    public Label getById(Integer id) {
+    public Label getById(Long id) {
         return labelService.getById(id);
     }
 
@@ -35,7 +35,7 @@ public class LabelController {
         return labelService.update(label);
     }
 
-    public boolean deleteById(Integer id) {
+    public boolean deleteById(Long id) {
         return labelService.deleteById(id);
     }
 }
