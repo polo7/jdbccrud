@@ -22,13 +22,11 @@ public class PostController {
     }
 
     public List<Post> getAll() {
-//        return postRepository.getAll();
-        return null;
+        return postService.getAll();
     }
 
     public Post getById(Long id) {
-//        return postRepository.getById(id);
-        return null;
+        return postService.getById(id);
     }
 
     public boolean update(Post post, String newTitle, String newContent, List<Label> newPostLabels, boolean changeStatus) {
@@ -45,12 +43,11 @@ public class PostController {
             post.setStatus(newStatus);
         }
 //        return postRepository.update(post) != null;
-        return false;
+        return postService.update(post);
     }
 
     public boolean deleteById(Long id) {
-//        return postRepository.deleteById(id);
-        return false;
+        return postService.deleteById(id);
     }
 
 }

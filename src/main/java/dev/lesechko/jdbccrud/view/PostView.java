@@ -85,8 +85,13 @@ public class PostView {
         }
         sc.nextLine();
 
-        Post createdPost = postController.add(postTitle, postContent, postLabels);
-        System.out.println("Post is created with ID " + createdPost.getId());
+//        Post createdPost = postController.add(postTitle, postContent, postLabels);
+//        System.out.println("Post is created with ID " + createdPost.getId());
+        if (postController.add(postTitle, postContent, postLabels))
+            System.out.println("Added 1 new post.");
+        else
+            System.out.println("Error occured while adding new post.");
+
         pauseDialog();
     }
 
