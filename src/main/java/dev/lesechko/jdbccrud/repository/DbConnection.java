@@ -1,9 +1,7 @@
 package dev.lesechko.jdbccrud.repository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import javax.swing.plaf.nimbus.State;
+import java.sql.*;
 
 public class DbConnection {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -36,6 +34,6 @@ public class DbConnection {
     }
 
     public static PreparedStatement getPreparedStatement(String sql) throws SQLException {
-        return getConnection().prepareStatement(sql);
+        return getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
     }
 }

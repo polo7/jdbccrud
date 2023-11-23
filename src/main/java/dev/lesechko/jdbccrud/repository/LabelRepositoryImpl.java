@@ -29,8 +29,8 @@ public class LabelRepositoryImpl implements LabelRepository {
     public List<Label> getAll() {
         List<Label> labels = new LinkedList<>();
         String sql = "SELECT * FROM labels";
-        try (Statement stmnt = DbConnection.getConnection().createStatement()) {
-            ResultSet rs = stmnt.executeQuery(sql);
+        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+            ResultSet rs = stmnt.executeQuery();
             while (rs.next()) {
                 Label label = new Label();
                 label.setId(rs.getLong("id"));
