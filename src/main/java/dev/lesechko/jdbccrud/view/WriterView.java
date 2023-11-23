@@ -21,7 +21,6 @@ public class WriterView {
         sc.nextLine();
     }
 
-
     public void show() {
         final String WRITERS_MENU = """
                 +--------------- WRITERS Menu --------------+
@@ -72,8 +71,11 @@ public class WriterView {
         }
         sc.nextLine();
 
-        Writer createdWriter = writerController.add(lastName, firstName, writerPosts);
-        System.out.println("Post is created with ID " + createdWriter.getId());
+        if (writerController.add(lastName, firstName, writerPosts))
+            System.out.println("Added 1 new writer.");
+        else
+            System.out.println("Error occured while adding new writer.");
+
         pauseDialog();
     }
 

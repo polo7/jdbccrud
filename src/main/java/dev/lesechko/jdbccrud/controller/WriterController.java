@@ -3,23 +3,21 @@ package dev.lesechko.jdbccrud.controller;
 import dev.lesechko.jdbccrud.model.Post;
 import dev.lesechko.jdbccrud.model.Status;
 import dev.lesechko.jdbccrud.model.Writer;
-import dev.lesechko.jdbccrud.repository.WriterRepository;
-//import dev.lesechko.jdbccrud.repository.gson.GsonWriterRepositoryImpl;
+import dev.lesechko.jdbccrud.service.WriterService;
 
 import java.util.List;
 
 
 public class WriterController {
-//    private final WriterRepository writerRepository = new GsonWriterRepositoryImpl();
+    private final WriterService writerService = new WriterService();
 
-    public Writer add(String lastName, String firstName, List<Post> posts) {
+    public boolean add(String lastName, String firstName, List<Post> posts) {
         Writer newWriter = new Writer();
         newWriter.setLastName(lastName);
         newWriter.setFirstName(firstName);
         newWriter.setPosts(posts);
         newWriter.setStatus(Status.ACTIVE);
-//        return writerRepository.save(newWriter);
-        return null;
+        return writerService.save(newWriter);
     }
 
     public List<Writer> getAll() {
