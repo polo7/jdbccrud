@@ -90,7 +90,7 @@ public class PostRepositoryImpl implements PostRepository {
                         Label label = new Label();
                         label.setId(rs.getLong("labelId"));
                         label.setName(rs.getString("name"));
-                        label.setStatus(Status.valueOf(rs.getString(9)));
+                        label.setStatus(Status.valueOf(rs.getString(10)));
                         labels.add(label);
                     } while (rs.next());
                 }
