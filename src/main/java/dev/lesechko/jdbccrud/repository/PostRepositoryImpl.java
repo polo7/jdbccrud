@@ -85,15 +85,15 @@ public class PostRepositoryImpl implements PostRepository {
                 post.setContent(rs.getString("content"));
                 post.setStatus(Status.valueOf(rs.getString("status")));
                 List<Label> labels = new ArrayList<>();
-                if (rs.getString("name") != null) {
-                    do {
+                do {
+                    if (rs.getString("name") != null) {
                         Label label = new Label();
                         label.setId(rs.getLong("labelId"));
                         label.setName(rs.getString("name"));
                         label.setStatus(Status.valueOf(rs.getString(10)));
                         labels.add(label);
-                    } while (rs.next());
-                }
+                    }
+                } while (rs.next());
                 post.setLabels(labels);
             }
             return post;

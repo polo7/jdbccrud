@@ -21,13 +21,11 @@ public class WriterController {
     }
 
     public List<Writer> getAll() {
-//        return writerRepository.getAll();
-        return null;
+        return writerService.getAll();
     }
 
     public Writer getById(Long id) {
-//        return writerRepository.getById(id);
-        return null;
+        return writerService.getById(id);
     }
 
     public boolean update(Writer writer, String newLastName, String newFirstName, List<Post> newPosts, boolean changeStatus) {
@@ -43,12 +41,10 @@ public class WriterController {
             Status newStatus = (writer.getStatus() == Status.DELETED) ? Status.ACTIVE : Status.DELETED;
             writer.setStatus(newStatus);
         }
-//        return writerRepository.update(writer) != null;
-        return false;
+        return writerService.update(writer);
     }
 
     public boolean deleteById(Long id) {
-//        return writerRepository.deleteById(id);
-        return false;
+        return writerService.deleteById(id);
     }
 }
