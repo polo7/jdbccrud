@@ -36,4 +36,3 @@ CREATE TABLE post_labels (
     FOREIGN KEY (labelId) REFERENCES labels(id),
     UNIQUE (postId, labelId)
 );
-
