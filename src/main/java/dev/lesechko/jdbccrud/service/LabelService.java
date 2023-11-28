@@ -8,7 +8,17 @@ import dev.lesechko.jdbccrud.repository.LabelRepositoryImpl;
 
 
 public class LabelService {
-    private final LabelRepository labelRepository = new LabelRepositoryImpl();
+//    private final LabelRepository labelRepository = new LabelRepositoryImpl();
+    private final LabelRepository labelRepository;
+
+    public LabelService() {
+        labelRepository = new LabelRepositoryImpl();
+    }
+
+    // Used for tests
+    public LabelService(LabelRepository labelRepository) {
+        this.labelRepository = labelRepository;
+    }
 
     public boolean save(Label labelToSave) {
         return labelRepository.save(labelToSave);
