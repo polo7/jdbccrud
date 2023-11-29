@@ -24,24 +24,22 @@ public class WriterRepositoryImpl implements WriterRepository {
     }
 
     @Override
-    public boolean save(Writer writer) {
+    public Writer save(Writer writer) {
         String sql = "INSERT INTO writers (firstName, lastName, status) VALUES (?, ?, ?)";
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
             stmnt.setString(1, writer.getFirstName());
             stmnt.setString(2, writer.getLastName());
             stmnt.setString(3, writer.getStatus().name());
-            if (stmnt.executeUpdate() != 0) {
-                ResultSet generatedKeys = stmnt.getGeneratedKeys();
-                generatedKeys.next();
-                Long insertedId = generatedKeys.getLong(1);
-                addWriterIdForPosts(insertedId, writer.getPosts());
-                return true;
-            } else {
-                return false;
-            }
+            if (stmnt.executeUpdate() == 0) return null;
+            ResultSet generatedKeys = stmnt.getGeneratedKeys();
+            generatedKeys.next();
+            Long insertedId = generatedKeys.getLong(1);
+            addWriterIdForPosts(insertedId, writer.getPosts());
+            writer.setId(insertedId);
+            return writer;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -101,7 +99,7 @@ public class WriterRepositoryImpl implements WriterRepository {
     }
 
     @Override
-    public boolean update(Writer writer) {
+    public Writer update(Writer writer) {
         String sqlClearWriterPosts = "UPDATE posts SET writerId = NULL WHERE writerId = ?";
         try (PreparedStatement stmntClearWriterPosts = DbConnection.getPreparedStatement(sqlClearWriterPosts)) {
             // 1. очищаем автора по всех постах, где он есть
@@ -119,10 +117,11 @@ public class WriterRepositoryImpl implements WriterRepository {
             stmnt.setString(2, writer.getLastName());
             stmnt.setString(3, writer.getStatus().name());
             stmnt.setLong(4, writer.getId());
-            return stmnt.executeUpdate() != 0;
+            if (stmnt.executeUpdate() == 0) return null;
+            return writer;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

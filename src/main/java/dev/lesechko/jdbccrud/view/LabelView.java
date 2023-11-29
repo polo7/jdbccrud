@@ -48,27 +48,26 @@ public class LabelView {
         System.out.println("+--- New Label ---+");
         System.out.print("Name: ");
         String labelName = sc.nextLine();
-        if (labelController.add(labelName))
-            System.out.println("Added 1 new label.");
-        else
+        Label newLabel = labelController.add(labelName);
+        if (newLabel != null) {
+            System.out.println("Added 1 new label with ID " + newLabel.getId());
+        } else {
             System.out.println("Error occured while adding new label.");
-
+        }
         pauseDialog();
     }
 
     void showAllLabels() {
         System.out.println("+--- List of all Labels ---+");
         System.out.printf("%-19s %-30s %-6s\n", "ID", "NAME", "STATUS");
-
         List<Label> labels = labelController.getAll();
-
-        if (labels != null && !labels.isEmpty())
+        if (labels != null && !labels.isEmpty()) {
             for (var label : labels) {
                 System.out.printf("%-19d %-30s %-6s\n", label.getId(), label.getName(), label.getStatus());
             }
-        else
+        } else {
             System.out.println("List is empty.");
-
+        }
         pauseDialog();
     }
 
@@ -81,11 +80,11 @@ public class LabelView {
         System.out.printf("%-19s %-30s %-7s\n", "ID", "NAME", "STATUS");
 
         Label label = labelController.getById(id);
-        if (label != null)
+        if (label != null) {
             System.out.printf("%-19d %-30s %-7s\n", label.getId(), label.getName(), label.getStatus());
-        else
+        } else {
             System.out.println("ID " + id + " is not found");
-
+        }
         pauseDialog();
     }
 
@@ -109,11 +108,12 @@ public class LabelView {
             System.out.print(action + " element? (type [yes/no]): ");
             String statusReply = sc.nextLine();
             boolean changeStatus = "yes".equalsIgnoreCase(statusReply);
-            if (labelController.update(label, newName, changeStatus))
-                System.out.println("Updating: OK");
-            else
+            Label updatedLabel = labelController.update(label, newName, changeStatus);
+            if (updatedLabel != null) {
+                System.out.println("Updating label ID "+ updatedLabel.getId() + ": OK");
+            } else {
                 System.out.println("Can't update or write to DB");
-
+            }
         }
         else
             System.out.println("ID " + id + " is not found");
@@ -126,10 +126,11 @@ public class LabelView {
         System.out.print("ID to delete: ");
         Long id = sc.nextLong();
         sc.nextLine();
-        if (labelController.deleteById(id))
+        if (labelController.deleteById(id)) {
             System.out.println(id + " is deleted");
-        else
+        } else {
             System.out.println("ID " + id + " is not found");
+        }
         pauseDialog();
     }
 }

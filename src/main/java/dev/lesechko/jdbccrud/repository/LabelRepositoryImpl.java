@@ -13,15 +13,19 @@ import dev.lesechko.jdbccrud.model.Status;
 
 public class LabelRepositoryImpl implements LabelRepository {
     @Override
-    public boolean save(Label label) {
+    public Label save(Label label) {
         String sql = "INSERT INTO labels (name, status) VALUES (?, ?)";
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
             stmnt.setString(1, label.getName());
             stmnt.setString(2, label.getStatus().name());
-            return stmnt.executeUpdate() != 0;
+            if (stmnt.executeUpdate() == 0) return null;
+            ResultSet generatedKeys = stmnt.getGeneratedKeys();
+            generatedKeys.next();
+            label.setId(generatedKeys.getLong(1));
+            return label;
         } catch (SQLException | NullPointerException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
@@ -66,16 +70,17 @@ public class LabelRepositoryImpl implements LabelRepository {
     }
 
     @Override
-    public boolean update(Label label) {
+    public Label update(Label label) {
         String sql = "UPDATE labels SET name = ?, status = ? WHERE id = ?";
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
             stmnt.setString(1, label.getName());
             stmnt.setString(2, label.getStatus().name());
             stmnt.setLong(3, label.getId());
-            return stmnt.executeUpdate() != 0;
+            if (stmnt.executeUpdate() == 0) return null;
+            return label;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

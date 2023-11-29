@@ -8,9 +8,17 @@ import java.util.List;
 
 
 public class PostService {
-    private final PostRepository postRepository = new PostRepositoryImpl();
+    private final PostRepository postRepository;
 
-    public boolean save(Post postToSave) {
+    public PostService() {
+        postRepository = new PostRepositoryImpl();
+    }
+
+    public PostService(PostRepository postRepository) {
+        this.postRepository = postRepository;
+    }
+
+    public Post save(Post postToSave) {
         return postRepository.save(postToSave);
     }
 
@@ -22,7 +30,7 @@ public class PostService {
         return postRepository.getById(id);
     }
 
-    public boolean update(Post post) {
+    public Post update(Post post) {
         return postRepository.update(post);
     }
 

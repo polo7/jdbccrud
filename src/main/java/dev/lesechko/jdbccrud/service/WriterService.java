@@ -9,7 +9,7 @@ import java.util.List;
 public class WriterService {
     WriterRepository writerRepository = new WriterRepositoryImpl();
 
-    public boolean save(Writer writer) {
+    public Writer save(Writer writer) {
         return writerRepository.save(writer);
     }
 
@@ -21,7 +21,7 @@ public class WriterService {
         return writerRepository.getById(id);
     }
 
-    public boolean update(Writer writer) {
+    public Writer update(Writer writer) {
         return writerRepository.update(writer);
     }
 

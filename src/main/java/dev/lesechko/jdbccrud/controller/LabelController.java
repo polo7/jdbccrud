@@ -9,7 +9,7 @@ import dev.lesechko.jdbccrud.service.LabelService;
 public class LabelController {
     private final LabelService labelService = new LabelService();
 
-    public boolean add(String labelName) {
+    public Label add(String labelName) {
         Label newLabel = new Label();
         newLabel.setName(labelName);
         newLabel.setStatus(Status.ACTIVE);
@@ -24,9 +24,9 @@ public class LabelController {
         return labelService.getById(id);
     }
 
-    public boolean update(Label label, String newName, boolean changeStatus) {
+    public Label update(Label label, String newName, boolean changeStatus) {
         boolean changeName = (newName != null && !newName.isEmpty());
-        if (!changeName && !changeStatus) return false;
+        if (!changeName && !changeStatus) return label;
         if (changeName) label.setName(newName);
         if (changeStatus) {
             Status newStatus = (label.getStatus() == Status.DELETED) ? Status.ACTIVE : Status.DELETED;

@@ -11,7 +11,7 @@ import dev.lesechko.jdbccrud.service.PostService;
 public class PostController {
     private final PostService postService = new PostService();
 
-    public boolean add(String title, String content, List<Label> labels) {
+    public Post add(String title, String content, List<Label> labels) {
         Post newPost = new Post();
         newPost.setTitle(title);
         newPost.setContent(content);
@@ -29,12 +29,12 @@ public class PostController {
         return postService.getById(id);
     }
 
-    public boolean update(Post post, String newTitle, String newContent, List<Label> newPostLabels, boolean changeStatus) {
+    public Post update(Post post, String newTitle, String newContent, List<Label> newPostLabels, boolean changeStatus) {
         boolean changeTitle = (newTitle != null && !newTitle.isEmpty());
         boolean changeContent = (newContent != null && !newContent.isEmpty());
         boolean changeLabels = newPostLabels != null;
 
-        if (!changeTitle && !changeContent && !changeLabels && !changeStatus) return false;
+        if (!changeTitle && !changeContent && !changeLabels && !changeStatus) return post;
         if (changeTitle) post.setTitle(newTitle);
         if (changeContent) post.setContent(newContent);
         if (changeLabels) post.setLabels(newPostLabels);

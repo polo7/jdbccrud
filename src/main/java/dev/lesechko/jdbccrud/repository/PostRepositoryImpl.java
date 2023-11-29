@@ -24,28 +24,24 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public boolean save(Post post) {
+    public Post save(Post post) {
         String sql = "INSERT INTO posts (title, content, status) VALUES (?, ?, ?)";
         try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
             stmnt.setString(1, post.getTitle());
             stmnt.setString(2, post.getContent());
             stmnt.setString(3, post.getStatus().name());
-            if (stmnt.executeUpdate() != 0) {
-                ResultSet generatedKeys = stmnt.getGeneratedKeys();
-                generatedKeys.next();
-                Long insertedId = generatedKeys.getLong(1);
-                addLabelsForPostId(post.getLabels(), insertedId);
-                return true;
-            } else {
-                return false;
-            }
+            if (stmnt.executeUpdate() == 0) return null;
+            ResultSet generatedKeys = stmnt.getGeneratedKeys();
+            generatedKeys.next();
+            Long insertedId = generatedKeys.getLong(1);
+            addLabelsForPostId(post.getLabels(), insertedId);
+            post.setId(insertedId);
+            return post;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
-
-//        SELECT * FROM posts LEFT JOIN post_labels ON post_labels.postId = posts.id LEFT JOIN labels ON post_labels.labelId = labels.id;
 
     @Override
     public List<Post> getAll() {
@@ -104,7 +100,7 @@ public class PostRepositoryImpl implements PostRepository {
     }
 
     @Override
-    public boolean update(Post post) {
+    public Post update(Post post) {
         String sqlClearPostLabels = "DELETE FROM post_labels WHERE postId = ?";
         try (PreparedStatement stmntClearPostLabels = DbConnection.getPreparedStatement(sqlClearPostLabels)) {
             // 1. проходим по post_labels и удаляем все упоминания по этому postId
@@ -122,10 +118,11 @@ public class PostRepositoryImpl implements PostRepository {
             stmnt.setString(2, post.getContent());
             stmnt.setString(3, post.getStatus().name());
             stmnt.setLong(4, post.getId());
-            return stmnt.executeUpdate() != 0;
+            if (stmnt.executeUpdate() == 0) return null;
+            return post;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 

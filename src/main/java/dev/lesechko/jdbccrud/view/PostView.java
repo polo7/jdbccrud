@@ -78,20 +78,20 @@ public class PostView {
             chosenLabelId = sc.nextLong();
             if (chosenLabelId == -1) break;
             Label labelToAdd = labelController.getById(chosenLabelId);
-            if (labelToAdd != null)
+            if (labelToAdd != null) {
                 postLabels.add(labelToAdd);
-            else
+            } else {
                 System.out.println("Wrong ID");
+            }
         }
         sc.nextLine();
 
-//        Post createdPost = postController.add(postTitle, postContent, postLabels);
-//        System.out.println("Post is created with ID " + createdPost.getId());
-        if (postController.add(postTitle, postContent, postLabels))
-            System.out.println("Added 1 new post.");
-        else
+        Post newPost = postController.add(postTitle, postContent, postLabels);
+        if (newPost != null) {
+            System.out.println("Added 1 new pos with ID " + newPost.getId());
+        } else {
             System.out.println("Error occured while adding new post.");
-
+        }
         pauseDialog();
     }
 
@@ -101,12 +101,12 @@ public class PostView {
 
         List<Post> posts = postController.getAll();
 
-        if (posts != null && !posts.isEmpty())
+        if (posts != null && !posts.isEmpty()) {
             for (var post : posts)
                 System.out.printf("%-19d %-30s %-7s\n", post.getId(), post.getTitle(), post.getStatus());
-        else
+        } else {
             System.out.println("List is empty");
-
+        }
         pauseDialog();
     }
 
@@ -132,7 +132,6 @@ public class PostView {
         } else {
             System.out.println("ID " + id + " is not found");
         }
-
         pauseDialog();
     }
 
@@ -180,14 +179,15 @@ public class PostView {
             String action = (post.getStatus() == Status.ACTIVE) ? "Delete" : "Restore";
             System.out.print(action + " element? (type [yes/no]): ");
             String statusReply = sc.nextLine();
-            boolean changeStatus = "yes".equals(statusReply.trim().toLowerCase());
+            boolean changeStatus = "yes".equalsIgnoreCase(statusReply.trim());
 
             // SAVING CHANGES
-            if (postController.update(post, newTitle, newContent, newPostLabels, changeStatus))
-                System.out.println("Updating: OK");
-            else
+            Post updatedPost = postController.update(post, newTitle, newContent, newPostLabels, changeStatus);
+            if (updatedPost != null) {
+                System.out.println("Updating post with ID " + updatedPost.getId() + ": OK");
+            } else {
                 System.out.println("Can't update or write to DB");
-
+            }
         } else {
             System.out.println("ID " + id + " is not found");
         }
@@ -198,11 +198,11 @@ public class PostView {
         System.out.print("ID to delete: ");
         Long id = sc.nextLong();
         sc.nextLine();
-        if (postController.deleteById(id))
+        if (postController.deleteById(id)) {
             System.out.println(id + " is deleted");
-        else
+        } else {
             System.out.println("ID " + id + " is not found");
-
+        }
         pauseDialog();
     }
 }

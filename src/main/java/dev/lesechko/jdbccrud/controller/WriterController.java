@@ -11,7 +11,7 @@ import java.util.List;
 public class WriterController {
     private final WriterService writerService = new WriterService();
 
-    public boolean add(String lastName, String firstName, List<Post> posts) {
+    public Writer add(String lastName, String firstName, List<Post> posts) {
         Writer newWriter = new Writer();
         newWriter.setLastName(lastName);
         newWriter.setFirstName(firstName);
@@ -28,12 +28,12 @@ public class WriterController {
         return writerService.getById(id);
     }
 
-    public boolean update(Writer writer, String newLastName, String newFirstName, List<Post> newPosts, boolean changeStatus) {
+    public Writer update(Writer writer, String newLastName, String newFirstName, List<Post> newPosts, boolean changeStatus) {
         boolean changeLastName = (newLastName != null && !newLastName.isEmpty());
         boolean changeFirstName = (newFirstName != null && !newFirstName.isEmpty());
         boolean changePosts = newPosts != null;
 
-        if (!changeLastName && !changeFirstName && !changePosts && !changeStatus) return false;
+        if (!changeLastName && !changeFirstName && !changePosts && !changeStatus) return writer;
         if (changeLastName) writer.setLastName(newLastName);
         if (changeFirstName) writer.setFirstName(newFirstName);
         if (changePosts) writer.setPosts(newPosts);

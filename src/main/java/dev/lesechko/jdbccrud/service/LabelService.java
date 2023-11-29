@@ -20,7 +20,7 @@ public class LabelService {
         this.labelRepository = labelRepository;
     }
 
-    public boolean save(Label labelToSave) {
+    public Label save(Label labelToSave) {
         return labelRepository.save(labelToSave);
     }
 
@@ -32,7 +32,7 @@ public class LabelService {
         return labelRepository.getById(id);
     }
 
-    public boolean update(Label label) {
+    public Label update(Label label) {
         return labelRepository.update(label);
     }
 

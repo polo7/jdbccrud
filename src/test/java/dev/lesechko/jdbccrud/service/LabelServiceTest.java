@@ -4,29 +4,34 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import dev.lesechko.jdbccrud.repository.LabelRepository;
-import dev.lesechko.jdbccrud.repository.LabelRepositoryImpl;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.mockito.Mockito;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.Mockito;
-
+import dev.lesechko.jdbccrud.repository.LabelRepository;
+import dev.lesechko.jdbccrud.repository.LabelRepositoryImpl;
 import dev.lesechko.jdbccrud.model.Status;
 import dev.lesechko.jdbccrud.model.Label;
 
-
 class LabelServiceTest {
-    private Label label = null;
-    //    private LabelService labelService = new LabelService();
+    private static Label correctLabel = null;
     private LabelRepository repository = Mockito.mock(LabelRepositoryImpl.class);
     private LabelService labelServiceUnderTest = new LabelService(repository);
 
+    @BeforeAll
+    static void init() {
+        correctLabel = new Label();
+        correctLabel.setName("Correct Label");
+        correctLabel.setStatus(Status.ACTIVE);
+    }
+
     @Test
     void shouldSaveTest() {
-        label = new Label();
-        label.setName("JUnit");
-        label.setStatus(Status.ACTIVE);
         when(repository.save(any())).thenReturn(true);
-        assertTrue(labelServiceUnderTest.save(label));
+        assertTrue(labelServiceUnderTest.save(correctLabel));
     }
 
     @Test
@@ -35,25 +40,36 @@ class LabelServiceTest {
     }
 
     @Test
-    void shouldGetByCorrectId() {
-        label = new Label();
-        label.setId(1L);
-        label.setName("Test");
-        label.setStatus(Status.ACTIVE);
-        when(labelServiceUnderTest.getById(1L)).thenReturn(label);
-        assertEquals(1,labelServiceUnderTest.getById(1L).getId());
-        assertEquals("Test",labelServiceUnderTest.getById(1L).getName());
-        assertEquals(Status.ACTIVE,labelServiceUnderTest.getById(1L).getStatus());
+    void shouldGetByCorrectIdTest() {
+        correctLabel = new Label();
+        correctLabel.setId(1L);
+        when(labelServiceUnderTest.getById(1L)).thenReturn(correctLabel);
+        assertAll("label",
+                () -> assertEquals(1,labelServiceUnderTest.getById(1L).getId()),
+                () -> assertEquals("Test",labelServiceUnderTest.getById(1L).getName()),
+                () -> assertEquals(Status.ACTIVE,labelServiceUnderTest.getById(1L).getStatus())
+        );
     }
 
     @Test
-    void shouldNotGetByWrongId() {
+    void shouldNotGetByWrongIdTest() {
         when(labelServiceUnderTest.getById(777L)).thenReturn(null);
         assertNull(labelServiceUnderTest.getById(777L));
     }
 
-    void shouldUpdateLabel() {
-        when(labelServiceUnderTest.update())
+    @Test
+    void shouldUpdateLabelTest() {
+        correctLabel = new Label();
+        correctLabel.setId(1L);
+        correctLabel.setName("Test");
+        correctLabel.setStatus(Status.ACTIVE);
+        when(labelServiceUnderTest.update(any())).thenReturn(true);
+        assertTrue(labelServiceUnderTest.update(correctLabel));
     }
 
+    @Test
+    void shouldGetAllTest() {
+        when(labelServiceUnderTest.getAll()).thenReturn(new ArrayList<>());
+        assertTrue(labelServiceUnderTest.getAll() instanceof List);
+    }
 }

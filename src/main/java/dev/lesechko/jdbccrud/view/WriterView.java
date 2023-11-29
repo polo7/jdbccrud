@@ -64,18 +64,20 @@ public class WriterView {
             chosenPostId = sc.nextLong();
             if (chosenPostId == -1) break;
             Post postToAdd = postController.getById(chosenPostId);
-            if (postToAdd != null)
+            if (postToAdd != null) {
                 writerPosts.add(postToAdd);
-            else
+            } else {
                 System.out.println("Wrond ID");
+            }
         }
         sc.nextLine();
 
-        if (writerController.add(lastName, firstName, writerPosts))
-            System.out.println("Added 1 new writer.");
-        else
+        Writer addedWriter = writerController.add(lastName, firstName, writerPosts);
+        if (addedWriter != null) {
+            System.out.println("Added 1 new writer with ID " + addedWriter.getId());
+        } else {
             System.out.println("Error occured while adding new writer.");
-
+        }
         pauseDialog();
     }
 
@@ -107,8 +109,9 @@ public class WriterView {
             System.out.println("Posts");
             System.out.printf("%-19s %-30s\n", "ID", "TITLE");
             List<Post> writerPosts = writer.getPosts();
-            for (var post : writerPosts)
+            for (var post : writerPosts) {
                 System.out.printf("%-19d %-30s\n", post.getId(), post.getTitle());
+            }
             System.out.println();
         } else {
             System.out.println("ID " + id + " is not found");
@@ -137,8 +140,9 @@ public class WriterView {
             System.out.println("Current posts");
             System.out.printf("%-19s %-30s\n", "ID", "TITLE");
             List<Post> writerPosts = writer.getPosts();
-            for (var post : writerPosts)
+            for (var post : writerPosts) {
                 System.out.printf("%-19d %-30s\n", post.getId(), post.getTitle());
+            }
             System.out.println();
             System.out.println("Enter new post IDs below (enter -1 to fisnish)");
             List<Post> newWriterPosts = new ArrayList<>();
@@ -147,10 +151,11 @@ public class WriterView {
                 chosenPostId = sc.nextLong();
                 if (chosenPostId == -1) break;
                 Post postToAdd = postController.getById(chosenPostId);
-                if (postToAdd != null)
+                if (postToAdd != null) {
                     newWriterPosts.add(postToAdd);
-                else
+                } else {
                     System.out.println("Wrong ID");
+                }
             }
             sc.nextLine();
 
@@ -162,11 +167,12 @@ public class WriterView {
             boolean changeStatus = "yes".equals(statusReply.trim().toLowerCase());
 
             // SAVING CHANGES
-            if (writerController.update(writer, newLastName, newFirstName, newWriterPosts, changeStatus))
-                System.out.println("Updating: OK");
-            else
+            Writer updatedWriter = writerController.update(writer, newLastName, newFirstName, newWriterPosts, changeStatus);
+            if (updatedWriter != null) {
+                System.out.println("Updating writer ID " + updatedWriter.getId() + ": OK");
+            } else {
                 System.out.println("Can't update or write to DB");
-
+            }
         } else {
             System.out.println("ID" + id + " is not found");
         }
@@ -177,11 +183,11 @@ public class WriterView {
         System.out.print("ID to delete: ");
         Long id = sc.nextLong();
         sc.nextLine();
-        if (writerController.deleteById(id))
+        if (writerController.deleteById(id)) {
             System.out.println(id + "is deleted");
-        else
+        } else {
             System.out.println("ID " + id + " is not found");
-
+        }
         pauseDialog();
     }
 }
