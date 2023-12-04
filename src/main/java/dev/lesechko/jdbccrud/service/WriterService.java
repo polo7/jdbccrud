@@ -7,7 +7,15 @@ import dev.lesechko.jdbccrud.repository.WriterRepositoryImpl;
 import java.util.List;
 
 public class WriterService {
-    WriterRepository writerRepository = new WriterRepositoryImpl();
+    WriterRepository writerRepository; //= new WriterRepositoryImpl();
+
+    public WriterService() {
+        writerRepository = new WriterRepositoryImpl();
+    }
+
+    public WriterService(WriterRepository writerRepository) {
+        this.writerRepository = writerRepository;
+    }
 
     public Writer save(Writer writer) {
         return writerRepository.save(writer);

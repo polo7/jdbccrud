@@ -38,6 +38,5 @@ public class PostServiceTest {
     void shouldGetByCorrectIdTest() {
         when(postRepository.getById(1L)).thenReturn(correctPost);
         assertEquals(correctPost, postRepository.getById(1L));
-
     }
 }
