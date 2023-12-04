@@ -24,52 +24,51 @@ class LabelServiceTest {
     @BeforeAll
     static void init() {
         correctLabel = new Label();
+        correctLabel.setId(1L);
         correctLabel.setName("Correct Label");
         correctLabel.setStatus(Status.ACTIVE);
     }
 
     @Test
     void shouldSaveTest() {
-        when(repository.save(any())).thenReturn(true);
-        assertTrue(labelServiceUnderTest.save(correctLabel));
+        when(repository.save(any())).thenReturn(correctLabel);
+        assertEquals(correctLabel, labelServiceUnderTest.save(correctLabel));
     }
 
     @Test
     void shouldNotSaveNullTest() {
-        assertFalse(labelServiceUnderTest.save(null));
+        assertNull(labelServiceUnderTest.save(null));
     }
 
     @Test
     void shouldGetByCorrectIdTest() {
-        correctLabel = new Label();
-        correctLabel.setId(1L);
-        when(labelServiceUnderTest.getById(1L)).thenReturn(correctLabel);
+        when(repository.getById(1L)).thenReturn(correctLabel);
         assertAll("label",
                 () -> assertEquals(1,labelServiceUnderTest.getById(1L).getId()),
-                () -> assertEquals("Test",labelServiceUnderTest.getById(1L).getName()),
+                () -> assertEquals("Correct Label",labelServiceUnderTest.getById(1L).getName()),
                 () -> assertEquals(Status.ACTIVE,labelServiceUnderTest.getById(1L).getStatus())
         );
     }
 
     @Test
     void shouldNotGetByWrongIdTest() {
-        when(labelServiceUnderTest.getById(777L)).thenReturn(null);
+        when(repository.getById(777L)).thenReturn(null);
         assertNull(labelServiceUnderTest.getById(777L));
     }
 
     @Test
     void shouldUpdateLabelTest() {
-        correctLabel = new Label();
-        correctLabel.setId(1L);
-        correctLabel.setName("Test");
-        correctLabel.setStatus(Status.ACTIVE);
-        when(labelServiceUnderTest.update(any())).thenReturn(true);
-        assertTrue(labelServiceUnderTest.update(correctLabel));
+        Label updatedLabel = new Label();
+        updatedLabel.setId(correctLabel.getId());
+        updatedLabel.setName(correctLabel.getName());
+        updatedLabel.setStatus(correctLabel.getStatus());
+        when(repository.update(any())).thenReturn(updatedLabel);
+        assertEquals(updatedLabel, labelServiceUnderTest.update(updatedLabel));
     }
 
     @Test
     void shouldGetAllTest() {
-        when(labelServiceUnderTest.getAll()).thenReturn(new ArrayList<>());
+        when(repository.getAll()).thenReturn(new ArrayList<>());
         assertTrue(labelServiceUnderTest.getAll() instanceof List);
     }
 }

@@ -22,7 +22,7 @@ public class PostServiceTest {
     @BeforeAll
     static void init() {
         correctPost = new Post();
-//        correctPost.setId(1L);
+        correctPost.setId(1L);
         correctPost.setTitle("Correct Post");
         correctPost.setContent("Content");
         correctPost.setStatus(Status.ACTIVE);
@@ -30,12 +30,14 @@ public class PostServiceTest {
 
     @Test
     void shouldSaveTest() {
-        when(postRepository.save(any())).thenReturn(true);
-        assertTrue(postServiceUnderTest.save(correctPost));
+        when(postRepository.save(any())).thenReturn(correctPost);
+        assertEquals(correctPost, postServiceUnderTest.save(correctPost));
     }
 
     @Test
     void shouldGetByCorrectIdTest() {
+        when(postRepository.getById(1L)).thenReturn(correctPost);
+        assertEquals(correctPost, postRepository.getById(1L));
 
     }
 }
