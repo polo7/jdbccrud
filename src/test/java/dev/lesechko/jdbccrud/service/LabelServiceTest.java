@@ -12,13 +12,13 @@ import org.mockito.Mockito;
 import org.junit.jupiter.api.Test;
 
 import dev.lesechko.jdbccrud.repository.LabelRepository;
-import dev.lesechko.jdbccrud.repository.LabelRepositoryImpl;
+import dev.lesechko.jdbccrud.repository.jdbc.JdbcLabelRepositoryImpl;
 import dev.lesechko.jdbccrud.model.Status;
 import dev.lesechko.jdbccrud.model.Label;
 
 class LabelServiceTest {
     private static Label correctLabel = null;
-    private LabelRepository repository = Mockito.mock(LabelRepositoryImpl.class);
+    private LabelRepository repository = Mockito.mock(JdbcLabelRepositoryImpl.class);
     private LabelService labelServiceUnderTest = new LabelService(repository);
 
     @BeforeAll

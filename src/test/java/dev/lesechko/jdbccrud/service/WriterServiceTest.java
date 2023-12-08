@@ -9,14 +9,14 @@ import org.mockito.Mockito;
 import org.junit.jupiter.api.Test;
 
 import dev.lesechko.jdbccrud.repository.WriterRepository;
-import dev.lesechko.jdbccrud.repository.WriterRepositoryImpl;
+import dev.lesechko.jdbccrud.repository.jdbc.JdbcWriterRepositoryImpl;
 import dev.lesechko.jdbccrud.model.Writer;
 import dev.lesechko.jdbccrud.model.Status;
 
 
 public class WriterServiceTest {
     private static Writer correctWriter = null;
-    WriterRepository writerRepository = Mockito.mock(WriterRepositoryImpl.class);
+    WriterRepository writerRepository = Mockito.mock(JdbcWriterRepositoryImpl.class);
     WriterService writerServiceUnderTest = new WriterService(writerRepository);
 
     @BeforeAll

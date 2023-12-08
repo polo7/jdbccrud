@@ -2,7 +2,7 @@ package dev.lesechko.jdbccrud.service;
 
 import dev.lesechko.jdbccrud.model.Writer;
 import dev.lesechko.jdbccrud.repository.WriterRepository;
-import dev.lesechko.jdbccrud.repository.WriterRepositoryImpl;
+import dev.lesechko.jdbccrud.repository.jdbc.JdbcWriterRepositoryImpl;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public class WriterService {
     WriterRepository writerRepository; //= new WriterRepositoryImpl();
 
     public WriterService() {
-        writerRepository = new WriterRepositoryImpl();
+        writerRepository = new JdbcWriterRepositoryImpl();
     }
 
     public WriterService(WriterRepository writerRepository) {

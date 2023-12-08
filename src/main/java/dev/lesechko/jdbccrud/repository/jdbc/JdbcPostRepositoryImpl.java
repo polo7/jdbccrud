@@ -1,8 +1,10 @@
-package dev.lesechko.jdbccrud.repository;
+package dev.lesechko.jdbccrud.repository.jdbc;
 
 import dev.lesechko.jdbccrud.model.Label;
 import dev.lesechko.jdbccrud.model.Post;
 import dev.lesechko.jdbccrud.model.Status;
+import dev.lesechko.jdbccrud.utils.DbConnectionUtils;
+import dev.lesechko.jdbccrud.repository.PostRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,10 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostRepositoryImpl implements PostRepository {
+public class JdbcPostRepositoryImpl implements PostRepository {
     private void addLabelsForPostId(List<Label> labels, Long postId) throws SQLException {
         String sql = "INSERT INTO post_labels (postId, labelId) VALUES (?, ?)";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             for (var label : labels) {
                 stmnt.setLong(1, postId);
                 stmnt.setLong(2, label.getId());
@@ -26,7 +28,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Post save(Post post) {
         String sql = "INSERT INTO posts (title, content, status) VALUES (?, ?, ?)";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setString(1, post.getTitle());
             stmnt.setString(2, post.getContent());
             stmnt.setString(3, post.getStatus().name());
@@ -47,7 +49,7 @@ public class PostRepositoryImpl implements PostRepository {
     public List<Post> getAll() {
         List<Post> posts = new ArrayList<>();
         String sql = "SELECT id, title, status FROM posts";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             ResultSet rs = stmnt.executeQuery();
             while (rs.next()) {
                 Post post = new Post();
@@ -71,7 +73,7 @@ public class PostRepositoryImpl implements PostRepository {
                 LEFT JOIN post_labels ON post_labels.postId = posts.id 
                 LEFT JOIN labels ON post_labels.labelId = labels.id
                 WHERE posts.id = ?""";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setLong(1, id);
             ResultSet rs = stmnt.executeQuery();
             if (rs.next()) {
@@ -102,7 +104,7 @@ public class PostRepositoryImpl implements PostRepository {
     @Override
     public Post update(Post post) {
         String sqlClearPostLabels = "DELETE FROM post_labels WHERE postId = ?";
-        try (PreparedStatement stmntClearPostLabels = DbConnection.getPreparedStatement(sqlClearPostLabels)) {
+        try (PreparedStatement stmntClearPostLabels = DbConnectionUtils.getPreparedStatement(sqlClearPostLabels)) {
             // 1. проходим по post_labels и удаляем все упоминания по этому postId
             stmntClearPostLabels.setLong(1, post.getId());
             stmntClearPostLabels.executeUpdate();
@@ -113,7 +115,7 @@ public class PostRepositoryImpl implements PostRepository {
         }
         // 3. обновляем сам пост
         String sql = "UPDATE posts SET title = ?, content = ?, status = ? WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setString(1, post.getTitle());
             stmnt.setString(2, post.getContent());
             stmnt.setString(3, post.getStatus().name());
@@ -130,7 +132,7 @@ public class PostRepositoryImpl implements PostRepository {
     public boolean deleteById(Long id) {
 //        String sql = "DELETE FROM labels WHERE id = ?";
         String sql = "UPDATE posts SET status = 'DELETED' WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setLong(1, id);
             return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {

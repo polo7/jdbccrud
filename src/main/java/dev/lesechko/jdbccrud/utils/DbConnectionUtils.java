@@ -1,9 +1,9 @@
-package dev.lesechko.jdbccrud.repository;
+package dev.lesechko.jdbccrud.utils;
 
 import java.sql.*;
 
 
-public class DbConnection {
+public class DbConnectionUtils {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_URL = "jdbc:mysql://localhost/jdbctest";
     private static final String USER = "topdev";
@@ -11,9 +11,9 @@ public class DbConnection {
 
     private static Connection connection;
 
-    private DbConnection() {}
+    private DbConnectionUtils() {}
 
-    public static Connection getConnection() {
+    private static Connection getConnection() {
         if (connection == null)
             try {
                 Class.forName(JDBC_DRIVER);

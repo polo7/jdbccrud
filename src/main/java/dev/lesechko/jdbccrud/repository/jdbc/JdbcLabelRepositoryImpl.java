@@ -1,21 +1,22 @@
-package dev.lesechko.jdbccrud.repository;
+package dev.lesechko.jdbccrud.repository.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
 import dev.lesechko.jdbccrud.model.Label;
 import dev.lesechko.jdbccrud.model.Status;
+import dev.lesechko.jdbccrud.utils.DbConnectionUtils;
+import dev.lesechko.jdbccrud.repository.LabelRepository;
 
 
-public class LabelRepositoryImpl implements LabelRepository {
+public class JdbcLabelRepositoryImpl implements LabelRepository {
     @Override
     public Label save(Label label) {
         String sql = "INSERT INTO labels (name, status) VALUES (?, ?)";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setString(1, label.getName());
             stmnt.setString(2, label.getStatus().name());
             if (stmnt.executeUpdate() == 0) return null;
@@ -33,7 +34,7 @@ public class LabelRepositoryImpl implements LabelRepository {
     public List<Label> getAll() {
         List<Label> labels = new LinkedList<>();
         String sql = "SELECT * FROM labels";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             ResultSet rs = stmnt.executeQuery();
             while (rs.next()) {
                 Label label = new Label();
@@ -53,7 +54,7 @@ public class LabelRepositoryImpl implements LabelRepository {
     public Label getById(Long id) {
         Label label = null;
         String sql = "SELECT * FROM labels WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setLong(1, id);
             ResultSet rs = stmnt.executeQuery();
             if (rs.next()) {
@@ -72,7 +73,7 @@ public class LabelRepositoryImpl implements LabelRepository {
     @Override
     public Label update(Label label) {
         String sql = "UPDATE labels SET name = ?, status = ? WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setString(1, label.getName());
             stmnt.setString(2, label.getStatus().name());
             stmnt.setLong(3, label.getId());
@@ -88,7 +89,7 @@ public class LabelRepositoryImpl implements LabelRepository {
     public boolean deleteById(Long id) {
 //        String sql = "DELETE FROM labels WHERE id = ?";
         String sql = "UPDATE labels SET status = 'DELETED' WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setLong(1, id);
             return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {

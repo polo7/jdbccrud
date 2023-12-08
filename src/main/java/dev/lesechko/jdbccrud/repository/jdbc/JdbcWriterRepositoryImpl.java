@@ -1,8 +1,10 @@
-package dev.lesechko.jdbccrud.repository;
+package dev.lesechko.jdbccrud.repository.jdbc;
 
 import dev.lesechko.jdbccrud.model.Post;
 import dev.lesechko.jdbccrud.model.Status;
 import dev.lesechko.jdbccrud.model.Writer;
+import dev.lesechko.jdbccrud.utils.DbConnectionUtils;
+import dev.lesechko.jdbccrud.repository.WriterRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,10 +12,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WriterRepositoryImpl implements WriterRepository {
+public class JdbcWriterRepositoryImpl implements WriterRepository {
     private void addWriterIdForPosts(Long writerId, List<Post> posts) throws SQLException {
         String sql = "UPDATE posts SET writerId = ? WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             for (var post : posts) {
                 stmnt.setLong(1, writerId);
                 stmnt.setLong(2, post.getId());
@@ -26,7 +28,7 @@ public class WriterRepositoryImpl implements WriterRepository {
     @Override
     public Writer save(Writer writer) {
         String sql = "INSERT INTO writers (firstName, lastName, status) VALUES (?, ?, ?)";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setString(1, writer.getFirstName());
             stmnt.setString(2, writer.getLastName());
             stmnt.setString(3, writer.getStatus().name());
@@ -47,7 +49,7 @@ public class WriterRepositoryImpl implements WriterRepository {
     public List<Writer> getAll() {
         List<Writer> writers = new ArrayList<>();
         String sql = "SELECT id, firstName, lastName, status FROM writers";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             ResultSet rs = stmnt.executeQuery();
             while (rs.next()) {
                 Writer writer = new Writer();
@@ -71,7 +73,7 @@ public class WriterRepositoryImpl implements WriterRepository {
                 SELECT * FROM writers 
                 LEFT JOIN posts ON writers.id = posts.writerId 
                 WHERE writers.id = ?""";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setLong(1, id);
             ResultSet rs = stmnt.executeQuery();
             if (rs.next()) {
@@ -101,7 +103,7 @@ public class WriterRepositoryImpl implements WriterRepository {
     @Override
     public Writer update(Writer writer) {
         String sqlClearWriterPosts = "UPDATE posts SET writerId = NULL WHERE writerId = ?";
-        try (PreparedStatement stmntClearWriterPosts = DbConnection.getPreparedStatement(sqlClearWriterPosts)) {
+        try (PreparedStatement stmntClearWriterPosts = DbConnectionUtils.getPreparedStatement(sqlClearWriterPosts)) {
             // 1. очищаем автора по всех постах, где он есть
             stmntClearWriterPosts.setLong(1, writer.getId());
             stmntClearWriterPosts.executeUpdate();
@@ -112,7 +114,7 @@ public class WriterRepositoryImpl implements WriterRepository {
         }
         // 3. обновляем самого автора
         String sql = "UPDATE writers SET firstName = ?, lastName = ?, status = ? WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setString(1, writer.getFirstName());
             stmnt.setString(2, writer.getLastName());
             stmnt.setString(3, writer.getStatus().name());
@@ -128,7 +130,7 @@ public class WriterRepositoryImpl implements WriterRepository {
     @Override
     public boolean deleteById(Long id) {
         String sql = "UPDATE writers SET status = 'DELETED' WHERE id = ?";
-        try (PreparedStatement stmnt = DbConnection.getPreparedStatement(sql)) {
+        try (PreparedStatement stmnt = DbConnectionUtils.getPreparedStatement(sql)) {
             stmnt.setLong(1, id);
             return stmnt.executeUpdate() != 0;
         } catch (SQLException e) {

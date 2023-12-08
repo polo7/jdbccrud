@@ -4,7 +4,7 @@ import java.util.List;
 
 import dev.lesechko.jdbccrud.model.Label;
 import dev.lesechko.jdbccrud.repository.LabelRepository;
-import dev.lesechko.jdbccrud.repository.LabelRepositoryImpl;
+import dev.lesechko.jdbccrud.repository.jdbc.JdbcLabelRepositoryImpl;
 
 
 public class LabelService {
@@ -12,7 +12,7 @@ public class LabelService {
     private final LabelRepository labelRepository;
 
     public LabelService() {
-        labelRepository = new LabelRepositoryImpl();
+        labelRepository = new JdbcLabelRepositoryImpl();
     }
 
     // Used for tests

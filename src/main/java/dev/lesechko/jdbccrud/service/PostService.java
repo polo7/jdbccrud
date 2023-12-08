@@ -2,7 +2,7 @@ package dev.lesechko.jdbccrud.service;
 
 import dev.lesechko.jdbccrud.model.Post;
 import dev.lesechko.jdbccrud.repository.PostRepository;
-import dev.lesechko.jdbccrud.repository.PostRepositoryImpl;
+import dev.lesechko.jdbccrud.repository.jdbc.JdbcPostRepositoryImpl;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ public class PostService {
     private final PostRepository postRepository;
 
     public PostService() {
-        postRepository = new PostRepositoryImpl();
+        postRepository = new JdbcPostRepositoryImpl();
     }
 
     public PostService(PostRepository postRepository) {
